@@ -1,0 +1,33 @@
+{
+  "name": "Life Planner by Clover Advisory",
+  "short_name": "Life Planner",
+  "description": "Strategic Planning for Your Life - A methodology for applying business-level intentionality to your personal life",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#3C5F6A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icons/clover-icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "lang": "en-US"
+}
