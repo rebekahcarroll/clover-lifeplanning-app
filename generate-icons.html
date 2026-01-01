@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PWA Icons</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 40px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 { color: #3C5F6A; }
+    .icon-preview {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      display: block;
+      margin-bottom: 5px;
+    }
+    button {
+      background: #3C5F6A;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 5px;
+    }
+    button:hover { background: #2d474f; }
+    .download-all {
+      background: #A1D4D8;
+      color: #3C5F6A;
+      font-size: 18px;
+      padding: 15px 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>PWA Icon Generator</h1>
+  <p>Click "Download All Icons" to generate all PWA icons. Save them to the <code>assets/icons/</code> folder.</p>
+
+  <button class="download-all" onclick="downloadAll()">Download All Icons</button>
+
+  <h2>Preview</h2>
+  <div id="previews"></div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = size;
+      canvas.height = size;
+
+      // Background
+      ctx.fillStyle = '#3C5F6A';
+      const radius = size * 0.2;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fill();
+
+      // Clover shape
+      const cx = size / 2;
+      const cy = size * 0.4;
+      const leafSize = size * 0.15;
+
+      ctx.fillStyle = '#A1D4D8';
+
+      // Top leaf
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - leafSize * 0.8, leafSize, leafSize * 1.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Left leaf
+      ctx.beginPath();
+      ctx.ellipse(cx - leafSize * 0.9, cy + leafSize * 0.3, leafSize * 1.1, leafSize * 0.9, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Right leaf
+      ctx.beginPath();
+      ctx.ellipse(cx + leafSize * 0.9, cy + leafSize * 0.3, leafSize * 1.1, leafSize * 0.9, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Stem
+      ctx.strokeStyle = '#A1D4D8';
+      ctx.lineWidth = size * 0.04;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + leafSize * 1.2);
+      ctx.lineTo(cx, size * 0.75);
+      ctx.stroke();
+
+      // Crossbar
+      ctx.beginPath();
+      ctx.moveTo(cx - leafSize * 0.6, size * 0.68);
+      ctx.lineTo(cx + leafSize * 0.6, size * 0.68);
+      ctx.stroke();
+
+      // Text (only for larger icons)
+      if (size >= 192) {
+        ctx.fillStyle = 'white';
+        ctx.font = `bold ${size * 0.08}px system-ui`;
+        ctx.textAlign = 'center';
+        ctx.fillText('LIFE PLAN', cx, size * 0.88);
+      }
+    }
+
+    function createPreviews() {
+      const container = document.getElementById('previews');
+      sizes.forEach(size => {
+        const div = document.createElement('div');
+        div.className = 'icon-preview';
+
+        const canvas = document.createElement('canvas');
+        canvas.id = `icon-${size}`;
+        drawIcon(canvas, size);
+
+        const label = document.createElement('div');
+        label.textContent = `${size}x${size}`;
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Download';
+        btn.onclick = () => downloadIcon(size);
+
+        div.appendChild(canvas);
+        div.appendChild(label);
+        div.appendChild(btn);
+        container.appendChild(div);
+      });
+    }
+
+    function downloadIcon(size) {
+      const canvas = document.getElementById(`icon-${size}`);
+      const link = document.createElement('a');
+      link.download = `icon-${size}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function downloadAll() {
+      sizes.forEach((size, i) => {
+        setTimeout(() => downloadIcon(size), i * 200);
+      });
+    }
+
+    createPreviews();
+  </script>
+</body>
+</html>
